@@ -75,7 +75,7 @@ function totalAmout(invoice) {
 }
 
 function renderPlainText(data, invoice, plays) {
-    let result = `Statement for ${invoice.customer}\n`;
+    let result = `Statement for ${data.customer}\n`;
 
     for (let aPerformance of invoice.performances) {
 
@@ -88,7 +88,8 @@ function renderPlainText(data, invoice, plays) {
 }
 
 function statement(invoice, plays) {
-    const statementData = {}
+    const statementData = {};
+    statementData.customer = invoice.customer;
     return renderPlainText(statementData, invoice, plays);
 }
 
