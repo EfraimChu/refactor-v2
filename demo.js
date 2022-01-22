@@ -50,7 +50,7 @@ function volumeCreditsFor( aPerformance) {
     return result;
 }
 
-function format(aNumber) {
+function usd(aNumber) {
     return new Intl.NumberFormat("en-US",
         {
             style: "currency", currency: "USD",
@@ -67,10 +67,10 @@ function statement(invoice, plays) {
         volumeCredits += volumeCreditsFor(aPerformance);
 
         // print line for this order
-        result += ` ${playFor(aPerformance).name}: ${format(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
+        result += ` ${playFor(aPerformance).name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
         totalAmount += amount_for(aPerformance);
     }
-    result += `Amount owed is ${format(totalAmount / 100)}\n`;
+    result += `Amount owed is ${usd(totalAmount / 100)}\n`;
     result += `You earned ${volumeCredits} credits\n`;
     return result;
 }
