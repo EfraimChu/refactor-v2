@@ -74,7 +74,7 @@ function totalAmout(invoice) {
     return totalAmount;
 }
 
-function renderPlainText(invoice,plays) {
+function renderPlainText(data, invoice, plays) {
     let result = `Statement for ${invoice.customer}\n`;
 
     for (let aPerformance of invoice.performances) {
@@ -88,7 +88,8 @@ function renderPlainText(invoice,plays) {
 }
 
 function statement(invoice, plays) {
-    return renderPlainText(invoice,plays);
+    const statementData = {}
+    return renderPlainText(statementData, invoice, plays);
 }
 
 // var ret = statement(invoices, players);
