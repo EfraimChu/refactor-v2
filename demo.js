@@ -23,29 +23,10 @@ function statement(invoice, plays) {
 
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);
-        result.play = playFor(aPerformance);
+        result.play = playFor(result);
+        result.amount = amount_for(result);
         return result;
     }
-
-    function playFor(perf) {
-        return plays[perf.playID];
-    }
-
-}
-
-function renderPlainText(data, plays) {
-    let result = `Statement for ${data.customer}\n`;
-
-    for (let aPerformance of data.performances) {
-
-        // print line for this order
-        result += ` ${aPerformance.play.name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
-    }
-    result += `Amount owed is ${usd(totalAmout() / 100)}\n`;
-    result += `You earned ${(totalVolumeCredits())} credits\n`;
-    return result;
-
-
 
     function amount_for(aPerformance) {
         let result = 0;
@@ -65,10 +46,30 @@ function renderPlainText(data, plays) {
                 result += 300 * aPerformance.audience;
                 break;
             default:
-                throw new Error(`unknown type: ${aPerformance.play(aPerformance).type}`);
+                throw new Error(`unknown type: ${aPerformance.play.type}`);
         }
         return result;
     }
+
+    function playFor(perf) {
+        return plays[perf.playID];
+    }
+
+}
+
+function renderPlainText(data, plays) {
+    let result = `Statement for ${data.customer}\n`;
+
+    for (let aPerformance of data.performances) {
+
+        // print line for this order
+        result += ` ${aPerformance.play.name}: ${usd(aPerformance.amount / 100)} (${aPerformance.audience} seats)\n`;
+    }
+    result += `Amount owed is ${usd(totalAmout() / 100)}\n`;
+    result += `You earned ${(totalVolumeCredits())} credits\n`;
+    return result;
+
+
 
     function volumeCreditsFor(aPerformance) {
         let result = 0;
@@ -99,7 +100,7 @@ function renderPlainText(data, plays) {
     function totalAmout() {
         let totalAmount = 0;
         for (let aPerformance of data.performances) {
-            totalAmount += amount_for(aPerformance);
+            totalAmount += aPerformance.amount;
         }
         return totalAmount;
     }
