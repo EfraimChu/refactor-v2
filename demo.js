@@ -58,8 +58,13 @@ function statement(invoice, plays) {
     return result;
 }
 
-var ret = statement(invoices, players);
-console.log(ret);
+// var ret = statement(invoices, players);
+// console.log(ret);
+
+module.exports = {
+    "statement": statement,
+    "invoices":invoices,
+    "players":players};
 
 //output:
 //Statement for BigCo
@@ -68,6 +73,22 @@ console.log(ret);
 //   Othello: $500.00 (40 seats)
 // Amount owed is $1,730.00
 // You earned 47 credits
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // 问题：
