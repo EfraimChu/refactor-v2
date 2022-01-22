@@ -77,7 +77,7 @@ function totalAmout(invoice) {
 function renderPlainText(data, invoice, plays) {
     let result = `Statement for ${data.customer}\n`;
 
-    for (let aPerformance of invoice.performances) {
+    for (let aPerformance of data.performances) {
 
         // print line for this order
         result += ` ${playFor(aPerformance).name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
@@ -90,6 +90,7 @@ function renderPlainText(data, invoice, plays) {
 function statement(invoice, plays) {
     const statementData = {};
     statementData.customer = invoice.customer;
+    statementData.performances = invoice.performances;
     return renderPlainText(statementData, invoice, plays);
 }
 
