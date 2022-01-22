@@ -23,8 +23,14 @@ function statement(invoice, plays) {
 
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);
+        result.play = playFor(aPerformance);
         return result;
     }
+
+    function playFor(perf) {
+        return plays[perf.playID];
+    }
+
 }
 
 function renderPlainText(data, plays) {
@@ -33,21 +39,18 @@ function renderPlainText(data, plays) {
     for (let aPerformance of data.performances) {
 
         // print line for this order
-        result += ` ${playFor(aPerformance).name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
+        result += ` ${aPerformance.play.name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
     }
     result += `Amount owed is ${usd(totalAmout() / 100)}\n`;
     result += `You earned ${(totalVolumeCredits())} credits\n`;
     return result;
 
-    function playFor(perf) {
-        return plays[perf.playID];
-    }
 
 
     function amount_for(aPerformance) {
         let result = 0;
 
-        switch (playFor(aPerformance).type) {
+        switch (aPerformance.play.type) {
             case "tragedy":
                 result = 40000;
                 if (aPerformance.audience > 30) {
@@ -62,7 +65,7 @@ function renderPlainText(data, plays) {
                 result += 300 * aPerformance.audience;
                 break;
             default:
-                throw new Error(`unknown type: ${playFor(aPerformance).type}`);
+                throw new Error(`unknown type: ${aPerformance.play(aPerformance).type}`);
         }
         return result;
     }
@@ -72,7 +75,7 @@ function renderPlainText(data, plays) {
         // add volume credits
         result += Math.max(aPerformance.audience - 30, 0);
         // add extra credit for every ten comedy attendees
-        if ("comedy" === playFor(aPerformance).type)
+        if ("comedy" === aPerformance.play.type)
             result += Math.floor(aPerformance.audience / 5);
         return result;
     }
