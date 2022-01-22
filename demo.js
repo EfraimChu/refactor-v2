@@ -12,6 +12,11 @@ var invoices = {
         {"playID": "othello", "audience": 40}]
 };
 
+function playFor(perf) {
+    return players[perf.playID];
+}
+
+
 function amount_for(aPerformance, play) {
     let result = 0;
 
@@ -44,18 +49,19 @@ function statement(invoice, plays) {
             style: "currency", currency: "USD",
             minimumFractionDigits: 2
         }).format;
-    for (let perf of invoice.performances) {
-        const play = plays[perf.playID];
-        let thisAmount = amount_for(perf, play);
+
+    for (let aPerformance of invoice.performances) {
+        const play = playFor(aPerformance);
+        let thisAmount = amount_for(aPerformance, play);
 
         // add volume credits
-        volumeCredits += Math.max(perf.audience - 30, 0);
+        volumeCredits += Math.max(aPerformance.audience - 30, 0);
         // add extra credit for every ten comedy attendees
         if ("comedy" === play.type)
-            volumeCredits += Math.floor(perf.audience / 5);
+            volumeCredits += Math.floor(aPerformance.audience / 5);
 
         // print line for this order
-        result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+        result += ` ${play.name}: ${format(thisAmount / 100)} (${aPerformance.audience} seats)\n`;
         totalAmount += thisAmount;
     }
     result += `Amount owed is ${format(totalAmount / 100)}\n`;
@@ -68,8 +74,9 @@ function statement(invoice, plays) {
 
 module.exports = {
     "statement": statement,
-    "invoices":invoices,
-    "players":players};
+    "invoices": invoices,
+    "players": players
+};
 
 //output:
 //Statement for BigCo
@@ -78,22 +85,6 @@ module.exports = {
 //   Othello: $500.00 (40 seats)
 // Amount owed is $1,730.00
 // You earned 47 credits
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // 问题：
