@@ -40,6 +40,15 @@ function amount_for(aPerformance) {
     return result;
 }
 
+function volumeCreditsFor(volumeCredits, aPerformance) {
+    // add volume credits
+    volumeCredits += Math.max(aPerformance.audience - 30, 0);
+    // add extra credit for every ten comedy attendees
+    if ("comedy" === playFor(aPerformance).type)
+        volumeCredits += Math.floor(aPerformance.audience / 5);
+    return volumeCredits;
+}
+
 function statement(invoice, plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
@@ -51,11 +60,7 @@ function statement(invoice, plays) {
         }).format;
 
     for (let aPerformance of invoice.performances) {
-        // add volume credits
-        volumeCredits += Math.max(aPerformance.audience - 30, 0);
-        // add extra credit for every ten comedy attendees
-        if ("comedy" === playFor(aPerformance).type)
-            volumeCredits += Math.floor(aPerformance.audience / 5);
+        volumeCredits += volumeCreditsFor(volumeCredits, aPerformance);
 
         // print line for this order
         result += ` ${playFor(aPerformance).name}: ${format(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
