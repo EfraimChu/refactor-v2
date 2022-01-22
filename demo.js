@@ -60,7 +60,6 @@ function usd(aNumber) {
 
 function statement(invoice, plays) {
     let totalAmount = 0;
-    let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}\n`;
 
     for (let aPerformance of invoice.performances) {
@@ -69,6 +68,7 @@ function statement(invoice, plays) {
         result += ` ${playFor(aPerformance).name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
         totalAmount += amount_for(aPerformance);
     }
+    let volumeCredits = 0;
     for (let aPerformance of invoice.performances) {
         volumeCredits += volumeCreditsFor(aPerformance);
     }
