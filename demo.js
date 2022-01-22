@@ -74,7 +74,7 @@ function totalAmout(invoice) {
     return totalAmount;
 }
 
-function statement(invoice, plays) {
+function renderPlainText(invoice,plays) {
     let result = `Statement for ${invoice.customer}\n`;
 
     for (let aPerformance of invoice.performances) {
@@ -85,6 +85,10 @@ function statement(invoice, plays) {
     result += `Amount owed is ${usd(totalAmout(invoice) / 100)}\n`;
     result += `You earned ${(totalVolumeCredits(invoice))} credits\n`;
     return result;
+}
+
+function statement(invoice, plays) {
+    return renderPlainText(invoice,plays);
 }
 
 // var ret = statement(invoices, players);
