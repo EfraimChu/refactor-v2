@@ -82,8 +82,7 @@ function statement(invoice, plays) {
         // print line for this order
         result += ` ${playFor(aPerformance).name}: ${usd(amount_for(aPerformance) / 100)} (${aPerformance.audience} seats)\n`;
     }
-    let totalAmount = appleSauce(invoice);
-    result += `Amount owed is ${usd(totalAmount / 100)}\n`;
+    result += `Amount owed is ${usd(appleSauce(invoice) / 100)}\n`;
     result += `You earned ${(totalVolumeCredits(invoice))} credits\n`;
     return result;
 }
